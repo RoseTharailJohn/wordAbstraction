@@ -1,9 +1,10 @@
+__author__ = 'rose'
 #all imports
 import pandas as pd
 import pickle as pkl
 
 #path to the csv files, ie the db
-path = '/home/rose/UMass/Courses/F15/BINDS/neurosynth/data/'
+path = '/home/rose/UMass/Courses/F15/BINDS/db/neurosynth-db/'
 
 def readDB() :
     #read the files. they are tab separated
@@ -165,11 +166,12 @@ if __name__=='__main__':
     print 'TESTING WITH LIST OF ACTIVATIONS'
     print len(acts_of_words_list[words[0]])
     print len(acts_of_words_list[words[1]])'''
-    save_activations(words, 'list', 'word_activation_list.pkl')
+    outputfile = '/home/rose/UMass/Courses/F15/BINDS/output/word_activation_list.pkl'
+    save_activations(words, 'list', outputfile)
     words_activation_list = {}
     print ''
     print 'Loading from pickled file'
-    with open('word_activation_list.pkl', 'rb') as f:
+    with open(outputfile, 'rb') as f:
         words_activation_list = pkl.load(f)
     print ("No of activations for word: "+ words[0] +" is ",len(words_activation_list[words[0]]))
     print ("No of activations for word: "+ words[1]+" is ",len(words_activation_list[words[1]]))
