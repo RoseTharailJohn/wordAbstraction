@@ -154,25 +154,32 @@ def save_activations(words, store_as, filename):
     print ''
 
 if __name__=='__main__':
-    words = ['emotion','accurate']
-    '''acts_of_words_dict=get_dict_activations_for_words(words)
-    acts_of_words_list=get_list_activations_for_words(words)
+    #uncomment below block for simple testing
+    '''words_list = ['emotion','accurate']
+    acts_of_words_dict=get_dict_activations_for_words(words_list)
+    acts_of_words_list=get_list_activations_for_words(words_list)
     print ''
     print 'TESTING WITH DICTIONARY OF PMIDS'
-    print len(acts_of_words_dict[words[0]].keys())
-    print len(acts_of_words_dict[words[1]].keys())
+    print len(acts_of_words_dict[words_list[0]].keys())
+    print len(acts_of_words_dict[words_list[1]].keys())
     print ''
     print ''
     print 'TESTING WITH LIST OF ACTIVATIONS'
-    print len(acts_of_words_list[words[0]])
-    print len(acts_of_words_list[words[1]])'''
+    print len(acts_of_words_list[words_list[0]])
+    print len(acts_of_words_list[words_list[1]])'''
+
+    words_inputfile= '/home/rose/UMass/Courses/F15/BINDS/output/words_file'
+    with open(words_inputfile, 'rb') as f:
+        words_list = pkl.load(f)
+
     outputfile = '/home/rose/UMass/Courses/F15/BINDS/output/word_activation_list.pkl'
-    save_activations(words, 'list', outputfile)
+
+    save_activations(words_list, 'list', outputfile)
+
     words_activation_list = {}
     print ''
     print 'Loading from pickled file'
     with open(outputfile, 'rb') as f:
         words_activation_list = pkl.load(f)
-    print ("No of activations for word: "+ words[0] +" is ",len(words_activation_list[words[0]]))
-    print ("No of activations for word: "+ words[1]+" is ",len(words_activation_list[words[1]]))
-    #print words_activation_list[words[0]][0]
+    print ("No of activations for word: "+ words_list[0] +" is ",len(words_activation_list[words_list[0]]))
+    print ("No of activations for word: "+ words_list[1]+" is ",len(words_activation_list[words_list[1]]))
