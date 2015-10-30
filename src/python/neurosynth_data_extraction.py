@@ -153,6 +153,31 @@ def save_activations(words, store_as, filename):
     print "Data has been pickled to file - "+filename
     print ''
 
+def save_word_xyzs(words, filename):
+    all_words_data_activations = get_activations_array(words)
+    with open(filename, 'wb') as f:
+        pkl.dump(all_words_data_activations, f)
+    print ''
+    print "Data has been pickled to file - "+filename
+    print ''
+
+def get_activations_array(words, threshold=0.0) :
+    #read db
+    data_tbl = pd.read_csv(path+'database.txt', sep="\t")
+    columns_of_interest = ['id','x','y','z']
+    activation_info_tbl = data_tbl.reindex(columns=columns_of_interest)
+    features_tbl = pd.read_csv(path+'features.txt', sep="\t")
+
+    all_words_data_activations = {}
+
+    for word in words:
+        pmids = features_tbl.loc[features_tbl[word] > threshold].reindex(columns=['pmid',word])
+        pmids.columns = ['id',word]
+        xyzs = activation_info_tbl.merge(pmids, on='id', how='inner').reindex(columns=['x','y','z'])
+        xyz_list_for_word = xyzs.to_records(index=False)
+        all_words_data_activations[word] = xyz_list_for_word
+    return all_words_data_activations
+
 if __name__=='__main__':
     #uncomment below block for simple testing
     '''words_list = ['emotion','accurate']
@@ -174,7 +199,10 @@ if __name__=='__main__':
 
     outputfile = '/home/rose/UMass/Courses/F15/BINDS/output/word_activation_list.pkl'
 
-    save_activations(words_list, 'list', outputfile)
+    #save_activations(words_list, 'list', outputfile)
+
+    #new implementation
+    save_word_xyzs(words_list, outputfile)
 
     words_activation_list = {}
     print ''
